@@ -32,7 +32,7 @@ def pytest_generate_tests(metafunc):
 
         marker = getattr(metafunc.function, "dockerfile", None)
 
-        path = marker.kwargs.get('package')
+        path = marker.kwargs.get('path')
         if path is None:
             path = '.'
 
