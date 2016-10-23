@@ -1,4 +1,5 @@
 import pytest
+from hamcrest import assert_that, is_
 
 
 # noinspection PyPep8Naming
@@ -9,7 +10,7 @@ class TestAlpainEnvironmentTest(object):
     COPIED_FILE_CONTENT = 'dimorinny'
 
     def test_copied_file_exists(self, File):
-        assert File(self.COPIED_FILE_PATH).exists
+        assert_that(File(self.COPIED_FILE_PATH).exists)
 
     def test_copied_file_content(self, File):
-        assert File(self.COPIED_FILE_PATH).content_string == self.COPIED_FILE_CONTENT
+        assert_that(File(self.COPIED_FILE_PATH).content_string, is_(self.COPIED_FILE_CONTENT))
