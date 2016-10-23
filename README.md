@@ -14,3 +14,19 @@ For testing your Dockerfiles you should create Python package with [conftest.py]
 ```
 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v <SOME_PATH>/sample/:/test dimorinny/testinfra
 ```
+
+Sample output:
+
+```
+============================= test session starts =============================
+platform linux -- Python 3.6.0b2, pytest-3.0.3, py-1.4.31, pluggy-0.4.0 -- /usr/local/bin/python3.6
+cachedir: .cache
+rootdir: /test, inifile:
+plugins: testinfra-1.4.2
+collecting ... collected 2 items
+
+alpine/test_image.py::TestAlpainEnvironmentTest::test_curl_exists[alpine] PASSED
+alpine/test_image.py::TestAlpainEnvironmentTest::test_docker_exists[alpine] PASSED
+
+=========================== 2 passed in 0.40 seconds ===========================
+```
