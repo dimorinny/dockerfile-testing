@@ -35,3 +35,4 @@ copy/test_image.py::TestAlpainEnvironmentTest::test_copied_file_exists[copy/dock
 copy/test_image.py::TestAlpainEnvironmentTest::test_copied_file_content[copy/docker] PASSED
 =========================== 4 passed in 0.88 seconds ===========================
 ```
+For sample, how to use it with CI, look it this [repo](https://github.com/dimorinny/docker-android-sdk), that use Travis CI for testing image environment.
