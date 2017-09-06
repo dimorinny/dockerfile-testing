@@ -2,12 +2,14 @@ FROM python:3.6-alpine
 
 MAINTAINER didika914@gmail.com
 
-COPY conftest.py conftest.py
+COPY requirements.txt requirements.txt
 
 RUN apk add --update docker && \
     pip3 install -U pip && \
-    pip3 install testinfra && \
-    pip3 install PyHamcrest
+    pip3 install -r requirements.txt && \
+    rm requirements.txt
+
+COPY conftest.py conftest.py
 
 WORKDIR /test
 CMD pytest -v
