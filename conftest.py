@@ -6,34 +6,51 @@ check_output = testinfra.get_host(
 ).check_output
 
 
-@pytest.fixture()
-def host(request):
-    # Build image
-    image_id = check_output("docker build -q %s", request.param)
-
-    # Run container
-    container_id = check_output(
-        "docker run -d %s tail -f /dev/null", image_id
+# noinspection SpellCheckingInspection
+def pytest_addoption(parser):
+    parser.addoption(
+        '--squash',
+        action='store_true',
+        help='Use squash option for building docker image'
     )
 
-    def teardown():
-        check_output("docker rm -f %s", container_id)
 
-    # Destroy the container at the end of the fixture life
+@pytest.fixture()
+def host(request):
+    arguments = '--squash' if request.config.getoption('--squash') else ''
+
+    build_command = 'docker build {arguments} -q {path}'.format(
+        arguments=arguments,
+        path=request.param
+    )
+    image_id = check_output(build_command)
+
+    run_command = 'docker run -d {image_id} tail -f /dev/null'.format(
+        image_id=image_id
+    )
+    container_id = check_output(run_command)
+
+    def teardown():
+        check_output('docker rm -f %s', container_id)
+
     request.addfinalizer(teardown)
 
-    # Return a dynamic created backend
-    return testinfra.get_host("docker://" + container_id)
+    return testinfra.get_host('docker://' + container_id)
 
 
+# noinspection SpellCheckingInspection
 def pytest_generate_tests(metafunc):
-    if "host" in metafunc.fixturenames:
+    if 'host' in metafunc.fixturenames:
 
-        marker = getattr(metafunc.function, "dockerfile", None)
+        marker = getattr(metafunc.function, 'dockerfile', None)
 
         path = marker.kwargs.get('path')
         if path is None:
             path = '.'
 
         metafunc.parametrize(
-            "host", [path], indirect=True, scope='module')
+            'host',
+            [path],
+            indirect=True,
+            scope='module'
+        )
