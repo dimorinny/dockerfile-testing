@@ -2,7 +2,7 @@ import pytest
 import testinfra
 
 check_output = testinfra.get_host(
-    "local://"
+    'local://'
 ).check_output
 
 
@@ -19,13 +19,13 @@ def pytest_addoption(parser):
 def host(request):
     arguments = '--squash' if request.config.getoption('--squash') else ''
 
-    build_command = 'docker build {arguments} -q {path}'.format(
+    build_command = 'docker build {arguments} --quiet {path}'.format(
         arguments=arguments,
         path=request.param
     )
     image_id = check_output(build_command)
 
-    run_command = 'docker run -d {image_id} tail -f /dev/null'.format(
+    run_command = 'docker run --detach --entrypoint tail {image_id} -f /dev/null'.format(
         image_id=image_id
     )
     container_id = check_output(run_command)
