@@ -16,7 +16,7 @@ To test the environment of docker container [testinfra](https://github.com/philp
 To test your Dockerfiles you should create Python package with both Dockerfiles and your tests for every image that you have (see [check commands](https://github.com/dimorinny/dockerfile-testing/blob/master/sample/commands/) and [file](https://github.com/dimorinny/dockerfile-testing/blob/master/sample/copy/) examples). Then, you should run [this](https://hub.docker.com/r/dimorinny/testinfra/) container with your tests and docker.sock as volumes (-v option). For example:
 
 ```
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v <SOME_PATH>/sample/:/test dimorinny/testinfra
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/sample/:/test dimorinny/testinfra
 ```
 
 Sample output:
