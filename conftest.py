@@ -42,7 +42,7 @@ def host(request):
 def pytest_generate_tests(metafunc):
     if 'host' in metafunc.fixturenames:
 
-        marker = getattr(metafunc.function, 'dockerfile', None)
+        marker = metafunc.definition.get_closest_marker('dockerfile')
 
         path = marker.kwargs.get('path')
         if path is None:
